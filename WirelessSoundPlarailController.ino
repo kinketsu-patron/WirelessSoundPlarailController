@@ -12,29 +12,10 @@
 // ヘッダインクルード
 // =======================================================
 #include "Arduino.h"
+#include "Interrupt.h"
 #include "RF24.h"
+#include "define.h"
 #include <SPI.h>
-
-// =======================================================
-// DEFINE定義
-// =======================================================
-#define USB_Serial Serial
-#define PREV_PIN   2
-#define PLAY_PIN   3
-#define NEXT_PIN   4
-#define MODE_PIN   5
-#define CE_PIN     6
-#define CSN_PIN    7
-
-// =======================================================
-// オブジェクト
-// =======================================================
-static RF24 m_NRFRadio( CE_PIN, CSN_PIN );
-
-// =======================================================
-// メンバ変数
-// =======================================================
-static const byte m_Address[ 6 ] = "NODE1";
 
 /**
  * =======================================================
@@ -45,25 +26,9 @@ static const byte m_Address[ 6 ] = "NODE1";
  */
 void setup( void )
 {
-    pinMode( PREV_PIN, INPUT_PULLUP );
-    pinMode( PLAY_PIN, INPUT_PULLUP );
-    pinMode( NEXT_PIN, INPUT_PULLUP );
-    pinMode( MODE_PIN, INPUT_PULLUP );
-
+    Setup_Interrupt( );
+    Setup_NRF24( );
     USB_Serial.begin( 115200 );  // USBデータ通信の通信速度
-
-    if ( m_NRFRadio.begin( ) == 0 )
-    {
-        Serial.println( F( "radio hardware is not responding!!" ) );
-        while ( true )
-        {
-            delay( 0 );
-        }
-    }
-
-    m_NRFRadio.setPALevel( RF24_PA_MIN );
-    m_NRFRadio.openWritingPipe( m_Address );
-    m_NRFRadio.stopListening( );
 }
 
 /**
@@ -75,49 +40,5 @@ void setup( void )
  */
 void loop( void )
 {
-    static bool w_HasPushed[ 4 ];
-
-    if ( digitalRead( PLAY_PIN ) == LOW )
-    {
-        w_HasPushed[ 0 ] = false;
-        w_HasPushed[ 1 ] = true;
-        w_HasPushed[ 2 ] = false;
-        w_HasPushed[ 3 ] = false;
-    }
-    else if ( digitalRead( PREV_PIN ) == LOW )
-    {
-        w_HasPushed[ 0 ] = true;
-        w_HasPushed[ 1 ] = false;
-        w_HasPushed[ 2 ] = false;
-        w_HasPushed[ 3 ] = false;
-    }
-    else if ( digitalRead( NEXT_PIN ) == LOW )
-    {
-        w_HasPushed[ 0 ] = false;
-        w_HasPushed[ 1 ] = false;
-        w_HasPushed[ 2 ] = true;
-        w_HasPushed[ 3 ] = false;
-    }
-    else if ( digitalRead( MODE_PIN ) == LOW )
-    {
-        w_HasPushed[ 0 ] = false;
-        w_HasPushed[ 1 ] = false;
-        w_HasPushed[ 2 ] = false;
-        w_HasPushed[ 3 ] = true;
-    }
-    else
-    {
-        w_HasPushed[ 0 ] = false;
-        w_HasPushed[ 1 ] = false;
-        w_HasPushed[ 2 ] = false;
-        w_HasPushed[ 3 ] = false;
-    }
-
-    m_NRFRadio.write( &w_HasPushed, sizeof( w_HasPushed ) );
-    USB_Serial.println( w_HasPushed[ 0 ] );
-    USB_Serial.println( w_HasPushed[ 1 ] );
-    USB_Serial.println( w_HasPushed[ 2 ] );
-    USB_Serial.println( w_HasPushed[ 3 ] );
-    USB_Serial.println( "End" );
-    delay( 500 );
+    /* Nothing */
 }
