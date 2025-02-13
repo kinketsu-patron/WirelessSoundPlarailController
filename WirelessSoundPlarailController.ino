@@ -19,12 +19,12 @@
 // DEFINE定義
 // =======================================================
 #define USB_Serial Serial
-#define PREV_PIN   D0
-#define PLAY_PIN   D1
-#define NEXT_PIN   D2
-#define MODE_PIN   D3
-#define CE_PIN     D7
-#define CSN_PIN    D8
+#define PREV_PIN   2
+#define PLAY_PIN   3
+#define NEXT_PIN   4
+#define MODE_PIN   5
+#define CE_PIN     6
+#define CSN_PIN    7
 
 // =======================================================
 // オブジェクト
@@ -114,5 +114,10 @@ void loop( void )
     }
 
     m_NRFRadio.write( &w_HasPushed, sizeof( w_HasPushed ) );
-    delay( 50 );
+    USB_Serial.println( w_HasPushed[ 0 ] );
+    USB_Serial.println( w_HasPushed[ 1 ] );
+    USB_Serial.println( w_HasPushed[ 2 ] );
+    USB_Serial.println( w_HasPushed[ 3 ] );
+    USB_Serial.println( "End" );
+    delay( 500 );
 }
