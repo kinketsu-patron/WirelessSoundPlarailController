@@ -72,20 +72,20 @@ static void mode_pushed( void )
  */
 static bool allow_intrrput( uint32_t p_WaitTime, uint32_t *p_PrevTime )
 {
-    ulong32 l_Interval;
-    bool    l_Allow;
+    uint32_t w_Interval;
+    bool     w_Allow;
 
-    l_Interval = millis( ) - *p_PrevTime;  // 前回の割込みからの経過時間を計算する
+    w_Interval = millis( ) - *p_PrevTime;  // 前回の割込みからの経過時間を計算する
 
-    if ( l_Interval >= p_WaitTime )  // 割込み待ち時間が所定時間を超えていたら
+    if ( w_Interval >= p_WaitTime )  // 割込み待ち時間が所定時間を超えていたら
     {
-        l_Allow     = true;
+        w_Allow     = true;
         *p_PrevTime = millis( );  // 前回時間を更新しておく
     }
     else
     {
-        l_Allow = false;
+        w_Allow = false;
     }
 
-    return l_Allow;
+    return w_Allow;
 }

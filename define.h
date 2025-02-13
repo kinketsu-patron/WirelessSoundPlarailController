@@ -8,7 +8,7 @@
 #define MODE_PIN_NO  5
 #define CE_PIN_NO    6
 #define CSN_PIN_NO   7
-#define CHATTER_WAIT 50 /*ms*/
+#define CHATTER_WAIT 200 /*ms*/
 
 #define PREV_ID 1U
 #define PLAY_ID 2U
