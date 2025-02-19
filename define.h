@@ -1,13 +1,22 @@
 // =======================================================
 // DEFINE定義
 // =======================================================
-#define USB_Serial   Serial
-#define PREV_PIN_NO  2
-#define PLAY_PIN_NO  3
-#define NEXT_PIN_NO  4
-#define MODE_PIN_NO  5
-#define CE_PIN_NO    6
-#define CSN_PIN_NO   7
+#define USB_Serial Serial
+
+#define PREV_LED  PD6
+#define PLAY_LED  PD5
+#define NEXT_LED  PD4
+#define MODE_LED  PD3
+#define POWER_LED PC2
+#define CE_NO     PB1
+#define CSN_NO    PB2
+#define PREV_SW   PC1
+#define PLAY_SW   PD2
+#define NEXT_SW   PD0
+#define MODE_SW   PD1
+#define SDA_I2C   SDA
+#define SCL_I2C   SCL
+
 #define CHATTER_WAIT 200 /*ms*/
 
 #define PREV_ID 1U

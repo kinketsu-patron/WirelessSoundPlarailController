@@ -8,15 +8,10 @@ static bool allow_intrrput( uint32_t p_WaitTime, uint32_t *p_PrevTime );
 
 void Setup_Interrupt( void )
 {
-    pinMode( PREV_PIN_NO, INPUT_PULLUP );
-    pinMode( PLAY_PIN_NO, INPUT_PULLUP );
-    pinMode( NEXT_PIN_NO, INPUT_PULLUP );
-    pinMode( MODE_PIN_NO, INPUT_PULLUP );
-
-    attachInterrupt( digitalPinToInterrupt( PREV_PIN_NO ), prev_pushed, FALLING );
-    attachInterrupt( digitalPinToInterrupt( PLAY_PIN_NO ), play_pushed, FALLING );
-    attachInterrupt( digitalPinToInterrupt( NEXT_PIN_NO ), next_pushed, FALLING );
-    attachInterrupt( digitalPinToInterrupt( MODE_PIN_NO ), mode_pushed, FALLING );
+    attachInterrupt( digitalPinToInterrupt( PREV_SW ), prev_pushed, FALLING );
+    attachInterrupt( digitalPinToInterrupt( PLAY_SW ), play_pushed, FALLING );
+    attachInterrupt( digitalPinToInterrupt( NEXT_SW ), next_pushed, FALLING );
+    attachInterrupt( digitalPinToInterrupt( MODE_SW ), mode_pushed, FALLING );
 }
 
 static void prev_pushed( void )
