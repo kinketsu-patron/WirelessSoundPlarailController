@@ -29,7 +29,7 @@ void setup( void )
 {
     Setup_Port( );
     Setup_Interrupt( );
-    Setup_NRF24( );
+    //Setup_NRF24( );
     USB_Serial.begin( 115200 );       // USBデータ通信の通信速度
     digitalWrite( POWER_LED, HIGH );  // 電源LEDを点ける
 }

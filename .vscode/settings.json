@@ -19,15 +19,17 @@
     },
     "C_Cpp.intelliSenseEngine": "Tag Parser",
     "C_Cpp.default.browse.path": [
-        "C:\\Users\\yoshi\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\renesas_uno\\1.3.2",
         "C:\\Users\\yoshi\\Documents\\Arduino\\libraries",
-        "C:\\Users\\WACC\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\megaavr\\1.8.8",
         "C:\\Users\\WACC\\Documents\\Arduino\\libraries",
-        "C:\\Users\\yoshi\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.8.6",
-        "C:\\Users\\yoshi\\AppData\\Local\\Arduino15\\packages\\Seeeduino\\hardware\\avr\\1.3.0"
+        "C:\\Users\\yoshi\\AppData\\Local\\Arduino15\\packages\\Seeeduino\\hardware\\avr\\1.3.0",
+        "C:\\Users\\WACC\\AppData\\Local\\Arduino15\\packages\\Seeeduino\\hardware\\avr\\1.3.0"
     ],
     "notebook.defaultFormatter": "xaver.clang-format",
     "arduino.additionalUrls": [
         "https://raw.githubusercontent.com/Seeed-Studio/Seeed_Platform/master/package_legacy_seeeduino_boards_index.json"
-    ]
+    ],
+    "arduino.path": "C:\\Program Files\\Arduino CLI",
+    "arduino.commandPath": "arduino-cli.exe",
+    "arduino.useArduinoCli": true,
+    "arduino.enableUSBDetection": true
 }
