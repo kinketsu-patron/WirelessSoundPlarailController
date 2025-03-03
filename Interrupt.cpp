@@ -16,8 +16,7 @@ void Setup_Interrupt( void )
 
 static void prev_pushed( void )
 {
-    static uint32_t l_Prevtime = 0U;  // 前回時間を初期化する
-
+    static uint32_t l_Prevtime = 0U;                            // 前回時間を初期化する
     if ( allow_intrrput( CHATTER_WAIT, &l_Prevtime ) == true )  // 前回の割り込みから所定時間経っていれば
     {
         NRF24_SendMessage( PREV_ID );
@@ -27,8 +26,7 @@ static void prev_pushed( void )
 
 static void play_pushed( void )
 {
-    static uint32_t l_Prevtime = 0U;  // 前回時間を初期化する
-
+    static uint32_t l_Prevtime = 0U;                            // 前回時間を初期化する
     if ( allow_intrrput( CHATTER_WAIT, &l_Prevtime ) == true )  // 前回の割り込みから所定時間経っていれば
     {
         NRF24_SendMessage( PLAY_ID );

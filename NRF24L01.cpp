@@ -21,7 +21,7 @@ void Setup_NRF24( void )
 {
     if ( m_NRFRadio.begin( ) == 0 )
     {
-        Serial.println( F( "radio hardware is not responding!!" ) );
+        USB_Serial.println( F( "radio hardware is not responding!!" ) );
         while ( true )
         {
             delay( 0 );

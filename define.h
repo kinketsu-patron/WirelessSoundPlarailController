@@ -3,17 +3,17 @@
 // =======================================================
 #define USB_Serial Serial
 
-#define PREV_LED  PD6
-#define PLAY_LED  PD5
-#define NEXT_LED  PD4
-#define MODE_LED  PD3
-#define POWER_LED A2
-#define CE_NO     PB1
-#define CSN_NO    PB2
-#define PREV_SW   A1
-#define PLAY_SW   PD2
-#define NEXT_SW   PD0
-#define MODE_SW   PD1
+#define PREV_LED  4
+#define PLAY_LED  5
+#define NEXT_LED  6
+#define MODE_LED  3
+#define POWER_LED 16
+#define CE_NO     9
+#define CSN_NO    10
+#define PREV_SW   0
+#define PLAY_SW   15
+#define NEXT_SW   2
+#define MODE_SW   1
 #define SDA_I2C   SDA
 #define SCL_I2C   SCL
 

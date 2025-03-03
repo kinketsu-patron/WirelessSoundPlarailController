@@ -27,10 +27,10 @@
  */
 void setup( void )
 {
+    USB_Serial.begin( 115200 );  // USBデータ通信の通信速度
     Setup_Port( );
     Setup_Interrupt( );
-    //Setup_NRF24( );
-    USB_Serial.begin( 115200 );       // USBデータ通信の通信速度
+    Setup_NRF24( );
     digitalWrite( POWER_LED, HIGH );  // 電源LEDを点ける
 }
 
@@ -44,4 +44,16 @@ void setup( void )
 void loop( void )
 {
     /* Nothing */
+    digitalWrite( PREV_LED, HIGH );
+    delay( 200 );
+    digitalWrite( PREV_LED, LOW );
+    digitalWrite( PLAY_LED, HIGH );
+    delay( 200 );
+    digitalWrite( PLAY_LED, LOW );
+    digitalWrite( NEXT_LED, HIGH );
+    delay( 200 );
+    digitalWrite( NEXT_LED, LOW );
+    digitalWrite( MODE_LED, HIGH );
+    delay( 200 );
+    digitalWrite( MODE_LED, LOW );
 }
