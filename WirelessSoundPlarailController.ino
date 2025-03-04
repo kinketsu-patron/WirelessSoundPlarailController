@@ -16,18 +16,11 @@
 #include "Port.h"
 #include "RF24.h"
 #include "define.h"
-#include <Adafruit_GFX.h>      //Adarfuitの画像描写ライブラリーを読み込む
-#include <Adafruit_SSD1306.h>  //AdarfuitのSSD1306用ライブラリーを読み込む
 #include <SPI.h>
+#include <U8g2lib.h>
+#include <Wire.h>
 
-const int SCREEN_WIDTH   = 128;   //ディスプレイのサイズ指定
-const int SCREEN_HEIGHT  = 64;    //ディスプレイのサイズ指定
-const int SCREEN_ADDRESS = 0x3C;  //I2Cのアドレス指定
-
-Adafruit_SSD1306 display( SCREEN_WIDTH, SCREEN_HEIGHT,
-                          &Wire );  //ディスプレイ制御用のインスタンスを作成。この時にデイスプレのサイズを渡す。
-
-int count = 1;  //countを整数型の変数として定義
+U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2( U8G2_R0, /* clock=*/SCL, /* data=*/SDA, /* reset=*/U8X8_PIN_NONE );
 
 /**
  * =======================================================
@@ -44,10 +37,11 @@ void setup( void )
     Setup_NRF24( );
     digitalWrite( POWER_LED, HIGH );  // 電源LEDを点ける
 
-    display.begin( SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS );  //ディスプレイを初期化。この時にI2Cアドレスを渡す。
-    display.clearDisplay( );                                //画面描写エリアを削除。
-    display.display( );  //画面描写エリアをディスプレイに転送。ここで全画面を削除。
-    delay( 1000 );       //1秒待機
+    u8g2.begin( );
+    u8g2.enableUTF8Print( );
+    u8g2.setFont( u8g2_font_b10_b_t_japanese1 );
+    u8g2.setContrast( 255 );
+    u8g2.setFlipMode( 0 );
 }
 
 /**
@@ -73,20 +67,13 @@ void loop( void )
     delay( 200 );
     digitalWrite( MODE_LED, LOW );
 
-    display.clearDisplay( );
-    display.setTextSize( 2 );                              //フォントサイズ指定。
-    display.setTextColor( SSD1306_BLACK, SSD1306_WHITE );  //display.setTextColor( 文字本体の色, 背景の色)
-    display.setCursor( 15, 10 );                           //描写開始座標（X.Y）
-    display.print( " HIBIKI " );                           //("")内を表示する。
-    display.setCursor( 0, 30 );
-    display.setTextColor( SSD1306_WHITE, SSD1306_BLACK );
-    display.setTextSize( 1 );
-    display.println( " MicroMouse " );  //printの後ろにlnが付くことで表示した後に改行する。
-    display.print( " Enjoy! " );
-    display.setCursor( 10, 55 );
-    display.print( "Count:" );
-    display.print( count );  //変数の中身を表示する。
-    display.display( );      //上記で設定したprint()をディスプレイに転送し表示する。
-    delay( 1000 );
-    count = count + 1;  //ループを１回通るごとに１づつたされる。
+    u8g2.setFontDirection( 0 );
+    u8g2.firstPage( );
+    do
+    {
+        u8g2.setCursor( 0, 15 );
+        u8g2.print( "Hello World!" );
+        u8g2.setCursor( 0, 40 );
+        u8g2.print( "こんにちは世界" );  // Japanese "Hello World"
+    } while ( u8g2.nextPage( ) );
 }
