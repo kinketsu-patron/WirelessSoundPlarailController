@@ -15,6 +15,7 @@
 #include "Interrupt.h"
 #include "Port.h"
 #include "RF24.h"
+#include "StationName.h"
 #include "define.h"
 #include <SPI.h>
 #include <U8g2lib.h>
@@ -39,7 +40,9 @@ void setup( void )
 
     u8g2.begin( );
     u8g2.enableUTF8Print( );
-    u8g2.setFont( u8g2_font_b10_b_t_japanese1 );
+    u8g2.setBitmapMode( false /* solid */ );
+    //u8g2.setFont( u8g2_font_b10_b_t_japanese1 );
+    u8g2.setFontDirection( 0 );
     u8g2.setContrast( 255 );
     u8g2.setFlipMode( 0 );
 }
@@ -53,27 +56,16 @@ void setup( void )
  */
 void loop( void )
 {
-    /* Nothing */
-    digitalWrite( PREV_LED, HIGH );
-    delay( 200 );
-    digitalWrite( PREV_LED, LOW );
-    digitalWrite( PLAY_LED, HIGH );
-    delay( 200 );
-    digitalWrite( PLAY_LED, LOW );
-    digitalWrite( NEXT_LED, HIGH );
-    delay( 200 );
-    digitalWrite( NEXT_LED, LOW );
-    digitalWrite( MODE_LED, HIGH );
-    delay( 200 );
-    digitalWrite( MODE_LED, LOW );
+    u8g2.clearBuffer( );
+    u8g2.drawXBMP( 0, 0, 72, 24, Tsugiha );
+    u8g2.drawXBMP( 32, 32, 96, 32, Kakogawa );
+    u8g2.sendBuffer( );
 
-    u8g2.setFontDirection( 0 );
-    u8g2.firstPage( );
-    do
-    {
-        u8g2.setCursor( 0, 15 );
-        u8g2.print( "Hello World!" );
-        u8g2.setCursor( 0, 40 );
-        u8g2.print( "こんにちは世界" );  // Japanese "Hello World"
-    } while ( u8g2.nextPage( ) );
+    delay( 500 );
+
+    u8g2.clearBuffer( );
+    u8g2.drawXBMP( 0, 0, 72, 24, Tsugiha );
+    u8g2.sendBuffer( );
+
+    delay( 500 );
 }
