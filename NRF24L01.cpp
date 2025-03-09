@@ -5,10 +5,8 @@
 // =======================================================
 static RF24 m_NRFRadio( CE_NO, CSN_NO );
 
-// =======================================================
-// メンバ変数
-// =======================================================
-static const byte m_Address[ 6 ] = "NODE1";
+const byte m_Address_ToTrain[ 6 ]      = { "TOTRN" };
+const byte m_Address_ToController[ 6 ] = { "TOCTL" };
 
 /**
  * =======================================================
@@ -29,11 +27,24 @@ void Setup_NRF24( void )
     }
 
     m_NRFRadio.setPALevel( RF24_PA_MIN );
-    m_NRFRadio.openWritingPipe( m_Address );
-    m_NRFRadio.stopListening( );
+    m_NRFRadio.openWritingPipe( m_Address_ToTrain );
+    m_NRFRadio.openReadingPipe( 0, m_Address_ToController );
 }
 
 void NRF24_SendMessage( uint8_t p_PushedID )
 {
-    m_NRFRadio.write( &p_PushedID, sizeof( p_PushedID ) );
+    m_NRFRadio.stopListening( );                            // 受信を停止
+    m_NRFRadio.write( &p_PushedID, sizeof( p_PushedID ) );  // PushedIDを送信
+}
+
+MSG NRF24_ReceiveMessage( void )
+{
+    MSG w_Message;
+
+    m_NRFRadio.startListening( );      // 受信を開始
+    while ( m_NRFRadio.available( ) )  // 読み取り可能なバイトがあれば
+    {
+        m_NRFRadio.read( &w_Message, sizeof( w_Message ) );  //
+    }
+    return w_Message;
 }

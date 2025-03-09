@@ -11,13 +11,12 @@
 // =======================================================
 // ヘッダインクルード
 // =======================================================
-#include "Arduino.h"
+#include "ButtonLED.h"
 #include "Interrupt.h"
+#include "NRF24L01.h"
 #include "OLED.h"
 #include "Port.h"
-#include "RF24.h"
 #include "define.h"
-#include <SPI.h>
 
 /**
  * =======================================================
@@ -62,4 +61,26 @@ void loop( void )
     // digitalWrite( MODE_LED, LOW );
 
     // delay( 500 );
+    MSG w_Message;
+
+    w_Message = NRF24_ReceiveMessage( );
+    switch ( w_Message.PlayStatus )
+    {
+        case IN_PREV:
+            BTN_PrevON( );
+            break;
+        case IN_PLAY:
+            BTN_PlayON( );
+            break;
+        case IN_PAUSE:
+            BTN_PlayBlink( );
+            break;
+        case IN_NEXT:
+            BTN_NextON( );
+            break;
+        default:
+            BTN_AllOff( );
+            break;
+    }
+    delay( 100 );
 }

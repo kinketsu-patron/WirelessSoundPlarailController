@@ -1,6 +1,7 @@
 #ifndef __OLED_H__
 #define __OLED_H__
 
+#include "define.h"
 #include <U8g2lib.h>
 #include <Wire.h>
 
