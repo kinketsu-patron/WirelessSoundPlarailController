@@ -13,15 +13,11 @@
 // =======================================================
 #include "Arduino.h"
 #include "Interrupt.h"
+#include "OLED.h"
 #include "Port.h"
 #include "RF24.h"
-#include "StationName.h"
 #include "define.h"
 #include <SPI.h>
-#include <U8g2lib.h>
-#include <Wire.h>
-
-U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2( U8G2_R0, /* clock=*/SCL, /* data=*/SDA, /* reset=*/U8X8_PIN_NONE );
 
 /**
  * =======================================================
@@ -32,19 +28,15 @@ U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2( U8G2_R0, /* clock=*/SCL, /* data=*/SDA
  */
 void setup( void )
 {
-    USB_Serial.begin( 115200 );  // USBデータ通信の通信速度
-    Setup_Port( );
-    Setup_Interrupt( );
-    Setup_NRF24( );
+    USB_Serial.begin( 115200 );       // USBデータ通信の通信速度
+    Setup_Port( );                    // ポートの初期設定
     digitalWrite( POWER_LED, HIGH );  // 電源LEDを点ける
-
-    u8g2.begin( );
-    u8g2.enableUTF8Print( );
-    u8g2.setBitmapMode( false /* solid */ );
-    //u8g2.setFont( u8g2_font_b10_b_t_japanese1 );
-    u8g2.setFontDirection( 0 );
-    u8g2.setContrast( 255 );
-    u8g2.setFlipMode( 0 );
+    Setup_OLED( );                    // ディスプレイの初期設定
+    SplashMovie_Start( );             // スプラッシュ画面開始
+    Setup_Interrupt( );               // 割り込み初期設定
+    Setup_NRF24( );                   // 無線通信設定
+    delay( 3000 );                    // 3秒待つ
+    SplashMovie_Stop( );              // スプラッシュ画面を消す
 }
 
 /**
@@ -56,16 +48,18 @@ void setup( void )
  */
 void loop( void )
 {
-    u8g2.clearBuffer( );
-    u8g2.drawXBMP( 0, 0, 72, 24, Tsugiha );
-    u8g2.drawXBMP( 32, 32, 96, 32, Kakogawa );
-    u8g2.sendBuffer( );
+    // u8g2.clearBuffer( );
+    // u8g2.drawXBMP( 0, 0, 72, 24, Tsugiha );
+    // u8g2.drawXBMP( 32, 32, 96, 32, Kakogawa );
+    // u8g2.sendBuffer( );
+    // digitalWrite( MODE_LED, HIGH );
 
-    delay( 500 );
+    // delay( 500 );
 
-    u8g2.clearBuffer( );
-    u8g2.drawXBMP( 0, 0, 72, 24, Tsugiha );
-    u8g2.sendBuffer( );
+    // u8g2.clearBuffer( );
+    // u8g2.drawXBMP( 0, 0, 72, 24, Tsugiha );
+    // u8g2.sendBuffer( );
+    // digitalWrite( MODE_LED, LOW );
 
-    delay( 500 );
+    // delay( 500 );
 }
