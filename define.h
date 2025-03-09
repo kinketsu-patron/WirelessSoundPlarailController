@@ -19,6 +19,7 @@
 
 #define CHATTER_WAIT 200 /*ms*/
 
+#define NONE    0U
 #define PREV_ID 1U
 #define PLAY_ID 2U
 #define NEXT_ID 3U

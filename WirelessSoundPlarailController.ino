@@ -34,7 +34,7 @@ void setup( void )
     SplashMovie_Start( );             // スプラッシュ画面開始
     Setup_Interrupt( );               // 割り込み初期設定
     Setup_NRF24( );                   // 無線通信設定
-    delay( 3000 );                    // 3秒待つ
+    delay( 2000 );                    // 3秒待つ
     SplashMovie_Stop( );              // スプラッシュ画面を消す
 }
 
@@ -61,7 +61,8 @@ void loop( void )
     // digitalWrite( MODE_LED, LOW );
 
     // delay( 500 );
-    MSG w_Message;
+    MSG     w_Message;
+    uint8_t w_PushedID;
 
     w_Message = NRF24_ReceiveMessage( );
     switch ( w_Message.PlayStatus )
@@ -82,5 +83,13 @@ void loop( void )
             BTN_AllOff( );
             break;
     }
-    delay( 100 );
+    delay( 50 );
+
+    w_PushedID = Get_PushedID( );
+    if ( w_PushedID != NONE )
+    {
+        NRF24_SendMessage( w_PushedID );
+        USB_Serial.println( "SendPushedID" );
+    }
+    delay( 50 );
 }

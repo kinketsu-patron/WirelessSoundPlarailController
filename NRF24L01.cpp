@@ -5,8 +5,8 @@
 // =======================================================
 static RF24 m_NRFRadio( CE_NO, CSN_NO );
 
-const byte m_Address_ToTrain[ 6 ]      = { "TOTRN" };
-const byte m_Address_ToController[ 6 ] = { "TOCTL" };
+static const byte m_Address_ToTrain[ 6 ]      = "TOTRN";
+static const byte m_Address_ToController[ 6 ] = "TOCTL";
 
 /**
  * =======================================================

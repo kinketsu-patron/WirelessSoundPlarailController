@@ -6,6 +6,8 @@ static void next_pushed( void );
 static void mode_pushed( void );
 static bool allow_intrrput( uint32_t p_WaitTime, uint32_t *p_PrevTime );
 
+static volatile uint8_t m_PushedID = NONE;
+
 void Setup_Interrupt( void )
 {
     attachInterrupt( digitalPinToInterrupt( PREV_SW ), prev_pushed, FALLING );
@@ -14,46 +16,64 @@ void Setup_Interrupt( void )
     attachInterrupt( digitalPinToInterrupt( MODE_SW ), mode_pushed, FALLING );
 }
 
+uint8_t Get_PushedID( void )
+{
+    uint8_t w_PushedID;
+
+    w_PushedID = m_PushedID;
+    m_PushedID = NONE;
+
+    return w_PushedID;
+}
+
 static void prev_pushed( void )
 {
-    static uint32_t l_Prevtime = 0U;                            // 前回時間を初期化する
-    if ( allow_intrrput( CHATTER_WAIT, &l_Prevtime ) == true )  // 前回の割り込みから所定時間経っていれば
-    {
-        NRF24_SendMessage( PREV_ID );
-        USB_Serial.println( "Prev" );
-    }
+    m_PushedID = PREV_ID;
+
+    // static uint32_t l_Prevtime = 0U;                            // 前回時間を初期化する
+    // if ( allow_intrrput( CHATTER_WAIT, &l_Prevtime ) == true )  // 前回の割り込みから所定時間経っていれば
+    // {
+    //     NRF24_SendMessage( PREV_ID );
+    //     USB_Serial.println( "Prev" );
+    // }
 }
 
 static void play_pushed( void )
 {
-    static uint32_t l_Prevtime = 0U;                            // 前回時間を初期化する
-    if ( allow_intrrput( CHATTER_WAIT, &l_Prevtime ) == true )  // 前回の割り込みから所定時間経っていれば
-    {
-        NRF24_SendMessage( PLAY_ID );
-        USB_Serial.println( "Play" );
-    }
+    m_PushedID = PLAY_ID;
+
+    // static uint32_t l_Prevtime = 0U;                            // 前回時間を初期化する
+    // if ( allow_intrrput( CHATTER_WAIT, &l_Prevtime ) == true )  // 前回の割り込みから所定時間経っていれば
+    // {
+    //     NRF24_SendMessage( PLAY_ID );
+    //     USB_Serial.println( "Play" );
+    // }
 }
 
 static void next_pushed( void )
 {
-    static uint32_t l_Prevtime = 0U;  // 前回時間を初期化する
+    m_PushedID = NEXT_ID;
 
-    if ( allow_intrrput( CHATTER_WAIT, &l_Prevtime ) == true )  // 前回の割り込みから所定時間経っていれば
-    {
-        NRF24_SendMessage( NEXT_ID );
-        USB_Serial.println( "Next" );
-    }
+    // static uint32_t l_Prevtime = 0U;  // 前回時間を初期化する
+
+    // if ( allow_intrrput( CHATTER_WAIT, &l_Prevtime ) == true )  // 前回の割り込みから所定時間経っていれば
+    // {
+    //     NRF24_SendMessage( NEXT_ID );
+    //     USB_Serial.println( "Next" );
+    // }
 }
 
 static void mode_pushed( void )
 {
-    static uint32_t l_Prevtime = 0U;  // 前回時間を初期化する
+    m_PushedID = MODE_ID;
 
-    if ( allow_intrrput( CHATTER_WAIT, &l_Prevtime ) == true )  // 前回の割り込みから所定時間経っていれば
-    {
-        NRF24_SendMessage( MODE_ID );
-        USB_Serial.println( "ModeChange" );
-    }
+    // static uint32_t l_Prevtime = 0U;  // 前回時間を初期化する
+
+    // if ( allow_intrrput( CHATTER_WAIT, &l_Prevtime ) == true )  // 前回の割り込みから所定時間経っていれば
+    // {
+    //     NRF24_SendMessage( MODE_ID );
+    //     USB_Serial.println( "ModeChange" );
+    // }
 }
 
 /**
