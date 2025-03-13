@@ -47,22 +47,7 @@ void setup( void )
  */
 void loop( void )
 {
-    // u8g2.clearBuffer( );
-    // u8g2.drawXBMP( 0, 0, 72, 24, Tsugiha );
-    // u8g2.drawXBMP( 32, 32, 96, 32, Kakogawa );
-    // u8g2.sendBuffer( );
-    // digitalWrite( MODE_LED, HIGH );
-
-    // delay( 500 );
-
-    // u8g2.clearBuffer( );
-    // u8g2.drawXBMP( 0, 0, 72, 24, Tsugiha );
-    // u8g2.sendBuffer( );
-    // digitalWrite( MODE_LED, LOW );
-
-    // delay( 500 );
-    MSG     w_Message;
-    uint8_t w_PushedID;
+    MSG w_Message;
 
     w_Message = NRF24_ReceiveMessage( );
     switch ( w_Message.PlayStatus )
@@ -83,13 +68,5 @@ void loop( void )
             BTN_AllOff( );
             break;
     }
-    delay( 50 );
-
-    w_PushedID = Get_PushedID( );
-    if ( w_PushedID != NONE )
-    {
-        NRF24_SendMessage( w_PushedID );
-        USB_Serial.println( "SendPushedID" );
-    }
-    delay( 50 );
+    delay( 100 );
 }

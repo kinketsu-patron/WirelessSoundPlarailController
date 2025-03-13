@@ -5,7 +5,6 @@
 #include "define.h"
 #include <Arduino.h>
 
-void    Setup_Interrupt( void );
-uint8_t Get_PushedID( void );
+void Setup_Interrupt( void );
 
 #endif

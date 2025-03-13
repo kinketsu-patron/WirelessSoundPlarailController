@@ -26,3 +26,11 @@ void SplashMovie_Stop( void )
     u8g2.clearBuffer( );
     u8g2.sendBuffer( );
 }
+
+void ShowDisplay( void )
+{
+    u8g2.clearBuffer( );
+    u8g2.drawXBMP( 0, 0, 72, 24, Tsugiha );
+    u8g2.drawXBMP( 32, 32, 96, 32, Kakogawa );
+    u8g2.sendBuffer( );
+}
