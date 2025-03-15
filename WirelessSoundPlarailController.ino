@@ -54,19 +54,19 @@ void loop( void )
     {
         case IN_PREV:
             BTN_PrevON( );
-            //ShowDisplay( w_Message.TruckNo, w_Message.PlayFolder );
+            ShowDisplay( w_Message.TruckNo, w_Message.PlayFolder );
             break;
         case IN_PLAY:
             BTN_PlayON( );
-            //ShowDisplay( w_Message.TruckNo, w_Message.PlayFolder );
+            ShowDisplay( w_Message.TruckNo, w_Message.PlayFolder );
             break;
         case IN_NEXT:
             BTN_NextON( );
-            //ShowDisplay( w_Message.TruckNo, w_Message.PlayFolder );
+            ShowDisplay( w_Message.TruckNo, w_Message.PlayFolder );
             break;
         default:
             BTN_AllOff( );
-            //TurnOffDisplay( );
+            TurnOffDisplay( );
             break;
     }
     delay( 50 );
