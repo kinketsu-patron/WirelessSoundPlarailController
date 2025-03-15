@@ -41,10 +41,12 @@ MSG NRF24_ReceiveMessage( void )
 {
     MSG w_Message;
 
+    noInterrupts( );
     m_NRFRadio.startListening( );      // 受信を開始
     while ( m_NRFRadio.available( ) )  // 読み取り可能なバイトがあれば
     {
         m_NRFRadio.read( &w_Message, sizeof( w_Message ) );  //
     }
+    interrupts( );
     return w_Message;
 }

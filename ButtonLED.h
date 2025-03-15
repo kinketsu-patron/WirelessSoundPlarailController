@@ -6,7 +6,6 @@
 
 void BTN_PrevON( void );
 void BTN_PlayON( void );
-void BTN_PlayBlink( void );
 void BTN_NextON( void );
 void BTN_AllOff( void );
 
