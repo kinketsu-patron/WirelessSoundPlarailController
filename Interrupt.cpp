@@ -4,7 +4,6 @@ static void prev_pushed( void );
 static void play_pushed( void );
 static void next_pushed( void );
 static void mode_pushed( void );
-static bool allow_intrrput( uint32_t p_WaitTime, uint32_t *p_PrevTime );
 
 static volatile uint8_t m_PushedID = NONE;
 
@@ -18,69 +17,30 @@ void Setup_Interrupt( void )
 
 static void prev_pushed( void )
 {
-    static uint32_t l_Prevtime = 0U;                            // 前回時間を初期化する
-    if ( allow_intrrput( CHATTER_WAIT, &l_Prevtime ) == true )  // 前回の割り込みから所定時間経っていれば
-    {
-        NRF24_SendMessage( PREV_ID );
-        USB_Serial.println( "Prev" );
-    }
+    m_PushedID = PREV_ID;
 }
 
 static void play_pushed( void )
 {
-    static uint32_t l_Prevtime = 0U;                            // 前回時間を初期化する
-    if ( allow_intrrput( CHATTER_WAIT, &l_Prevtime ) == true )  // 前回の割り込みから所定時間経っていれば
-    {
-        NRF24_SendMessage( PLAY_ID );
-        USB_Serial.println( "Play" );
-    }
+    m_PushedID = PLAY_ID;
 }
 
 static void next_pushed( void )
 {
-    static uint32_t l_Prevtime = 0U;  // 前回時間を初期化する
-
-    if ( allow_intrrput( CHATTER_WAIT, &l_Prevtime ) == true )  // 前回の割り込みから所定時間経っていれば
-    {
-        NRF24_SendMessage( NEXT_ID );
-        USB_Serial.println( "Next" );
-    }
+    m_PushedID = NEXT_ID;
 }
 
 static void mode_pushed( void )
 {
-    static uint32_t l_Prevtime = 0U;  // 前回時間を初期化する
-
-    if ( allow_intrrput( CHATTER_WAIT, &l_Prevtime ) == true )  // 前回の割り込みから所定時間経っていれば
-    {
-        NRF24_SendMessage( MODE_ID );
-        USB_Serial.println( "ModeChange" );
-    }
+    m_PushedID = MODE_ID;
 }
 
-/**
- * =======================================================
- * @fn          allow_intrrput
- * @brief       前回の割り込みからの所定時間経過判定
- * @date        2025-02-13
- * =======================================================
- */
-static bool allow_intrrput( uint32_t p_WaitTime, uint32_t *p_PrevTime )
+uint8_t Intr_GetPushedID( void )
 {
-    uint32_t w_Interval;
-    bool     w_Allow;
+    return m_PushedID;
+}
 
-    w_Interval = millis( ) - *p_PrevTime;  // 前回の割込みからの経過時間を計算する
-
-    if ( w_Interval >= p_WaitTime )  // 割込み待ち時間が所定時間を超えていたら
-    {
-        w_Allow     = true;
-        *p_PrevTime = millis( );  // 前回時間を更新しておく
-    }
-    else
-    {
-        w_Allow = false;
-    }
-
-    return w_Allow;
+void Intr_SetPushedID( uint8_t p_PushedID )
+{
+    m_PushedID = p_PushedID;
 }

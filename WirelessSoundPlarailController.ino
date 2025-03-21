@@ -12,6 +12,7 @@
 // ヘッダインクルード
 // =======================================================
 #include "ButtonLED.h"
+#include "Interrupt.h"
 #include "NRF24L01.h"
 #include "OLED.h"
 #include "Port.h"
@@ -30,7 +31,8 @@ void setup( void )
     Setup_Port( );             // ポートの初期設定
     Setup_NRF24( );            // 無線通信設定
     Setup_OLED( );             // ディスプレイの初期設定
-    SplashMovie_Start( );      // スプラッシュ画面開始
+    Setup_Interrupt( );
+    SplashMovie_Start( );  // スプラッシュ画面開始
 
     delay( 1500 );  // 1.5秒待つ
 
@@ -47,8 +49,9 @@ void setup( void )
  */
 void loop( void )
 {
-    MSG  w_Message;
-    bool w_IsReceived;
+    MSG              w_Message;
+    volatile uint8_t w_PushedID;
+    bool             w_IsReceived;
 
     w_IsReceived = NRF24_ReceiveMessage( &w_Message );
     if ( w_IsReceived == true )
@@ -79,7 +82,13 @@ void loop( void )
         USB_Serial.print( ", PlayFolder = " );
         USB_Serial.println( w_Message.PlayFolder );
     }
-    delay( 30 );
-    NRF24_SendMessage( );
-    delay( 30 );
+    delay( 200 );
+
+    noInterrupts( );
+    w_PushedID = Intr_GetPushedID( );
+    Intr_SetPushedID( NONE );
+    interrupts( );
+
+    NRF24_SendMessage( w_PushedID );
+    delay( 200 );
 }
