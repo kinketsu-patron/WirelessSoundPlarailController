@@ -12,8 +12,15 @@ typedef struct
     uint8_t PlayFolder;
 } MSG;
 
+typedef struct
+{
+    PinStatus Status;
+    uint8_t   Stat = false;
+    uint32_t  Time = 0U;
+} VALID_PUSH;
+
 void Setup_NRF24( void );
-void NRF24_SendMessage( uint8_t p_PushedID );
-MSG  NRF24_ReceiveMessage( void );
+void NRF24_SendMessage( void );
+bool NRF24_ReceiveMessage( MSG *p_Message );
 
 #endif /* NRF24_H */

@@ -12,7 +12,6 @@
 // ヘッダインクルード
 // =======================================================
 #include "ButtonLED.h"
-#include "Interrupt.h"
 #include "NRF24L01.h"
 #include "OLED.h"
 #include "Port.h"
@@ -27,14 +26,15 @@
  */
 void setup( void )
 {
-    USB_Serial.begin( 115200 );       // USBデータ通信の通信速度
-    Setup_Port( );                    // ポートの初期設定
+    USB_Serial.begin( 9600 );  // USBデータ通信の通信速度
+    Setup_Port( );             // ポートの初期設定
+    Setup_NRF24( );            // 無線通信設定
+    Setup_OLED( );             // ディスプレイの初期設定
+    SplashMovie_Start( );      // スプラッシュ画面開始
+
+    delay( 1500 );  // 1.5秒待つ
+
     digitalWrite( POWER_LED, HIGH );  // 電源LEDを点ける
-    Setup_OLED( );                    // ディスプレイの初期設定
-    SplashMovie_Start( );             // スプラッシュ画面開始
-    Setup_Interrupt( );               // 割り込み初期設定
-    Setup_NRF24( );                   // 無線通信設定
-    delay( 2000 );                    // 3秒待つ
     SplashMovie_Stop( );              // スプラッシュ画面を消す
 }
 
@@ -47,27 +47,39 @@ void setup( void )
  */
 void loop( void )
 {
-    MSG w_Message;
+    MSG  w_Message;
+    bool w_IsReceived;
 
-    w_Message = NRF24_ReceiveMessage( );
-    switch ( w_Message.PlayStatus )
+    w_IsReceived = NRF24_ReceiveMessage( &w_Message );
+    if ( w_IsReceived == true )
     {
-        case IN_PREV:
-            BTN_PrevON( );
-            ShowDisplay( w_Message.TruckNo, w_Message.PlayFolder );
-            break;
-        case IN_PLAY:
-            BTN_PlayON( );
-            ShowDisplay( w_Message.TruckNo, w_Message.PlayFolder );
-            break;
-        case IN_NEXT:
-            BTN_NextON( );
-            ShowDisplay( w_Message.TruckNo, w_Message.PlayFolder );
-            break;
-        default:
-            BTN_AllOff( );
-            TurnOffDisplay( );
-            break;
+        switch ( w_Message.PlayStatus )
+        {
+            case IN_PREV:
+                BTN_PrevON( );
+                ShowDisplay( w_Message.TruckNo, w_Message.PlayFolder );
+                break;
+            case IN_PLAY:
+                BTN_PlayON( );
+                ShowDisplay( w_Message.TruckNo, w_Message.PlayFolder );
+                break;
+            case IN_NEXT:
+                BTN_NextON( );
+                ShowDisplay( w_Message.TruckNo, w_Message.PlayFolder );
+                break;
+            default:
+                BTN_AllOff( );
+                TurnOffDisplay( );
+                break;
+        }
+        USB_Serial.print( "PlayStatus = " );
+        USB_Serial.print( w_Message.PlayStatus );
+        USB_Serial.print( ", TruckNo = " );
+        USB_Serial.print( w_Message.TruckNo );
+        USB_Serial.print( ", PlayFolder = " );
+        USB_Serial.println( w_Message.PlayFolder );
     }
-    delay( 50 );
+    delay( 30 );
+    NRF24_SendMessage( );
+    delay( 30 );
 }

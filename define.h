@@ -17,7 +17,7 @@
 #define SDA_I2C   SDA
 #define SCL_I2C   SCL
 
-#define CHATTER_WAIT 200 /*ms*/
+#define CHATTER_WAIT 50 /*ms*/
 
 #define NONE    0U
 #define PREV_ID 1U
