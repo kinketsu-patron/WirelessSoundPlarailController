@@ -28,16 +28,20 @@
 void setup( void )
 {
     USB_Serial.begin( 9600 );  // USBデータ通信の通信速度
-    Setup_Port( );             // ポートの初期設定
-    Setup_NRF24( );            // 無線通信設定
-    Setup_OLED( );             // ディスプレイの初期設定
+    while ( !USB_Serial )
+    {
+        // some boards need to wait to ensure access to serial over USB
+    }
+    Setup_Port( );   // ポートの初期設定
+    Setup_NRF24( );  // 無線通信設定
+    Setup_OLED( );   // ディスプレイの初期設定
     Setup_Interrupt( );
-    SplashMovie_Start( );  // スプラッシュ画面開始
+    // SplashMovie_Start( );  // スプラッシュ画面開始
 
-    delay( 1500 );  // 1.5秒待つ
+    // delay( 1500 );  // 1.5秒待つ
 
     digitalWrite( POWER_LED, HIGH );  // 電源LEDを点ける
-    SplashMovie_Stop( );              // スプラッシュ画面を消す
+    // SplashMovie_Stop( );              // スプラッシュ画面を消す
 }
 
 /**
@@ -86,7 +90,6 @@ void loop( void )
 
     noInterrupts( );
     w_PushedID = Intr_GetPushedID( );
-    Intr_SetPushedID( NONE );
     interrupts( );
 
     NRF24_SendMessage( w_PushedID );

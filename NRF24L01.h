@@ -3,7 +3,9 @@
 
 #include "RF24.h"
 #include "define.h"
+#include "nRF24L01.h"
 #include <Arduino.h>
+#include <SPI.h>
 
 typedef struct
 {

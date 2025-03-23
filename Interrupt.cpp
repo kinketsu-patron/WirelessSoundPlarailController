@@ -37,10 +37,9 @@ static void mode_pushed( void )
 
 uint8_t Intr_GetPushedID( void )
 {
-    return m_PushedID;
-}
+    uint8_t w_PushedID;
 
-void Intr_SetPushedID( uint8_t p_PushedID )
-{
-    m_PushedID = p_PushedID;
+    w_PushedID = m_PushedID;
+    m_PushedID = NONE;
+    return w_PushedID;
 }

@@ -8,8 +8,8 @@
 #define NEXT_LED  6
 #define MODE_LED  3
 #define POWER_LED 16
-#define CE_NO     9
-#define CSN_NO    10
+#define CE_NO     10
+#define CSN_NO    9
 #define PREV_SW   2
 #define PLAY_SW   15
 #define NEXT_SW   0
