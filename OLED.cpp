@@ -29,33 +29,28 @@ void SplashMovie_Stop( void )
 
 void ShowDisplay( uint8_t p_TruckNo, uint8_t p_PlayFolder )
 {
-    static uint16_t w_Counter     = 0U;
     static ARROW    w_ArrowStatus = MIN;
     static uint8_t *w_Arrow;
 
     u8g2.clearBuffer( );
     u8g2.drawXBMP( 0, 0, 72, 24, Station_DispData[ p_PlayFolder - 1 ][ p_TruckNo - 1 ].Prefix );
-    if ( w_Counter % 3 == 0U )
+    switch ( w_ArrowStatus )
     {
-        switch ( w_ArrowStatus )
-        {
-            case MIN:
-                w_Arrow       = Arrow_Min;
-                w_ArrowStatus = MID;
-                break;
-            case MID:
-                w_Arrow       = Arrow_Mid;
-                w_ArrowStatus = MAX;
-                break;
-            case MAX:
-                w_Arrow       = Arrow_Max;
-                w_ArrowStatus = MIN;
-                break;
-            default:
-                break;
-        }
+        case MIN:
+            w_Arrow       = Arrow_Min;
+            w_ArrowStatus = MID;
+            break;
+        case MID:
+            w_Arrow       = Arrow_Mid;
+            w_ArrowStatus = MAX;
+            break;
+        case MAX:
+            w_Arrow       = Arrow_Max;
+            w_ArrowStatus = MIN;
+            break;
+        default:
+            break;
     }
-    w_Counter++;
     u8g2.drawXBMP( 0, 40, 32, 24, w_Arrow );
     u8g2.drawXBMP( 32, 32, 96, 32, Station_DispData[ p_PlayFolder - 1 ][ p_TruckNo - 1 ].Name );
     u8g2.sendBuffer( );
