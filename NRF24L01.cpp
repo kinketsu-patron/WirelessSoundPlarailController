@@ -27,12 +27,12 @@ void Setup_NRF24( void )
     }
 
     m_NRFRadio.setPALevel( RF24_PA_LOW );
-    //m_NRFRadio.setPayloadSize( sizeof( uint8_t ) );
+    m_NRFRadio.setPayloadSize( 3U /* bytes */ );
     m_NRFRadio.openWritingPipe( m_Address_ToTrain );
     m_NRFRadio.openReadingPipe( 1, m_Address_ToController );
 }
 
-void NRF24_SendMessage( uint8_t p_PushedID )
+void NRF24_SendMessage( volatile uint8_t p_PushedID )
 {
     uint32_t w_StartTimer, w_EndTimer;
     bool     w_Report = false;
@@ -69,6 +69,7 @@ void NRF24_SendMessage( uint8_t p_PushedID )
         USB_Serial.print( F( "Time to transmit = " ) );
         USB_Serial.print( w_EndTimer - w_StartTimer );  // print the timer result
         USB_Serial.print( F( " us. Sent: " ) );
+        Intr_SetPushedID( NONE );
         if ( p_PushedID == 1U )
         {
             USB_Serial.println( "PREV" );
@@ -98,7 +99,8 @@ bool NRF24_ReceiveMessage( MSG *p_Message )
     if ( m_NRFRadio.available( &w_Pipe ) )  // 読み取り可能なバイトがあれば
     {
         w_Bytes = m_NRFRadio.getPayloadSize( );  // get the size of the payload
-        m_NRFRadio.read( p_Message, sizeof( *p_Message ) );
+        // m_NRFRadio.read( p_Message, sizeof( *p_Message ) );
+        m_NRFRadio.read( p_Message, w_Bytes );
         USB_Serial.print( F( "Received " ) );
         USB_Serial.print( w_Bytes );  // print the size of the payload
         USB_Serial.print( F( " bytes on pipe " ) );

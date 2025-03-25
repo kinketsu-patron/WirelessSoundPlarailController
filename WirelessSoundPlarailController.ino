@@ -27,14 +27,10 @@
  */
 void setup( void )
 {
-    USB_Serial.begin( 9600 );  // USBデータ通信の通信速度
-    // while ( !USB_Serial )
-    // {
-    //     // some boards need to wait to ensure access to serial over USB
-    // }
-    Setup_Port( );   // ポートの初期設定
-    Setup_NRF24( );  // 無線通信設定
-    Setup_OLED( );   // ディスプレイの初期設定
+    USB_Serial.begin( 115200 );  // USBデータ通信の通信速度
+    Setup_Port( );               // ポートの初期設定
+    Setup_NRF24( );              // 無線通信設定
+    Setup_OLED( );               // ディスプレイの初期設定
     Setup_Interrupt( );
     SplashMovie_Start( );  // スプラッシュ画面開始
 
@@ -57,6 +53,7 @@ void loop( void )
     volatile uint8_t w_PushedID;
     bool             w_IsReceived;
 
+    delay( 100 );
     w_IsReceived = NRF24_ReceiveMessage( &w_Message );
     if ( w_IsReceived == true )
     {
@@ -86,12 +83,11 @@ void loop( void )
         USB_Serial.print( ", PlayFolder = " );
         USB_Serial.println( w_Message.PlayFolder );
     }
-    delay( 200 );
+    delay( 100 );
 
     noInterrupts( );
     w_PushedID = Intr_GetPushedID( );
     interrupts( );
 
     NRF24_SendMessage( w_PushedID );
-    delay( 200 );
 }
