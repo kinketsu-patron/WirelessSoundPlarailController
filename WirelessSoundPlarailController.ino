@@ -49,9 +49,29 @@ void setup( void )
  */
 void loop( void )
 {
+    static uint8_t   w_Wait = 0U;
     MSG              w_Message;
     volatile uint8_t w_PushedID;
     bool             w_IsReceived;
+
+    delay( 100 );
+
+    noInterrupts( );
+    w_PushedID = Intr_GetPushedID( );
+    interrupts( );
+
+    if ( w_PushedID == MODE_ID )
+    {
+        NRF24_SendMessage( w_PushedID );
+        w_Wait = 20U;
+    }
+
+    if ( w_Wait > 0U )
+    {
+        w_PushedID = NONE;
+        w_Wait--;
+    }
+    NRF24_SendMessage( w_PushedID );
 
     delay( 100 );
     w_IsReceived = NRF24_ReceiveMessage( &w_Message );
@@ -72,8 +92,16 @@ void loop( void )
                 ShowDisplay( w_Message.TruckNo, w_Message.PlayFolder );
                 break;
             default:
-                BTN_AllOff( );
-                TurnOffDisplay( );
+                if ( w_Wait > 0U && w_Wait < 18U )
+                {
+                    ShowModeChange( w_Message.PlayFolder );
+                    BTN_ModeON( );
+                }
+                else
+                {
+                    ShowStandby( );
+                    BTN_AllOff( );
+                }
                 break;
         }
         USB_Serial.print( "PlayStatus = " );
@@ -83,11 +111,4 @@ void loop( void )
         USB_Serial.print( ", PlayFolder = " );
         USB_Serial.println( w_Message.PlayFolder );
     }
-    delay( 100 );
-
-    noInterrupts( );
-    w_PushedID = Intr_GetPushedID( );
-    interrupts( );
-
-    NRF24_SendMessage( w_PushedID );
 }

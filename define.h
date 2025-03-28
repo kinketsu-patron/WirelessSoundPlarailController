@@ -25,7 +25,6 @@
 #define NEXT_ID 3U
 #define MODE_ID 4U
 
-#define IN_PREV  1U
-#define IN_PLAY  2U
-#define IN_NEXT  3U
-#define IN_PAUSE 4U
+#define IN_PREV 1U
+#define IN_PLAY 2U
+#define IN_NEXT 3U

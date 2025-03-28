@@ -27,6 +27,45 @@ void SplashMovie_Stop( void )
     u8g2.sendBuffer( );
 }
 
+void ShowStandby( void )
+{
+    static bool    w_Scene = false;
+    static uint8_t w_Count = 0U;
+
+    if ( w_Count % 2U == 0U )
+    {
+        if ( w_Scene )
+        {
+            u8g2.clearBuffer( );
+            u8g2.drawXBMP( 0, 0, 128, 64, Standby_A );
+            u8g2.sendBuffer( );
+            w_Scene = false;
+        }
+        else
+        {
+            u8g2.clearBuffer( );
+            u8g2.drawXBMP( 0, 0, 128, 64, Standby_B );
+            u8g2.sendBuffer( );
+            w_Scene = true;
+        }
+    }
+    w_Count++;
+}
+
+void ShowModeChange( uint8_t p_PlayFolder )
+{
+    u8g2.clearBuffer( );
+    if ( p_PlayFolder == 1U )
+    {
+        u8g2.drawXBMP( 0, 0, 128, 64, ModeChange_ToKyoto );
+    }
+    else
+    {
+        u8g2.drawXBMP( 0, 0, 128, 64, ModeChange_ToHimeji );
+    }
+    u8g2.sendBuffer( );
+}
+
 void ShowDisplay( uint8_t p_TruckNo, uint8_t p_PlayFolder )
 {
     static ARROW    w_ArrowStatus = MIN;
